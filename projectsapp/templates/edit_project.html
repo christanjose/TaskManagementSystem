@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Create Project</h4>
+        </div>
+
+        <div class="card-content">
+            <div class="card-body">
+
+                <form method="POST" action="{% url 'update_project' data.id %}">
+
+                    {% csrf_token %}
+
+                    <div class="form-body">
+                        <div class="row">
+
+                            <!-- Project Name -->
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Project Name</label>
+                                    <input type="text" class="form-control"
+                                           name="project_name"
+                                           placeholder="Enter Project Name"
+                                           value="{{ data.Project_Name }}"required>
+                                </div>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea class="form-control"
+                                              name="project_description"
+                                              rows="4"
+                                              placeholder="Project Description">{{ data.Project_Description }}</textarea>
+                                </div>
+                            </div>
+
+                            <!-- Start Date -->
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <input type="date" class="form-control"
+                                           name="start_date" value="{{ data.Start_Date|date:'Y-m-d' }}">
+                                </div>
+                            </div>
+
+                            <!-- End Date -->
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <input type="date" class="form-control"
+                                           name="end_date" value="{{ data.End_Date|date:'Y-m-d' }}">
+                                </div>
+                            </div>
+
+                            <!-- Members -->
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Select Members</label>
+
+                                    <select class="form-control"
+                                            name="project_members"
+                                            multiple
+                                            size="5">
+
+                                        {% for member in members %}
+                                            <option value="{{ member.id }}"
+                                            {% if member in data.Project_Members.all %}selected{% endif %}>
+                                                {{ member.username }}
+                                            </option>
+                                        {% endfor %}
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="col-12 d-flex justify-content-end">
+                                <button type="submit"
+                                        class="btn btn-primary me-1 mb-1">
+                                        Update Project
+                                </button>
+
+                                <button type="reset"
+                                        class="btn btn-light-secondary me-1 mb-1">
+                                    Reset
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

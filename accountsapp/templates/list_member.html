@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <section class="section">
+        <div class="row" id="table-hover-row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Members</h4>
+                    </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>NAME</th>
+                                        <th>EMAIL</th>
+                                        <th>OPTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for i in members %}
+                                    <tr>
+                                        <td>{{ i.id }}</td>
+                                        <td>{{ i.username }}</td>
+                                        <td>{{ i.email }}</td>
+                                        <td>
+                                            <a href="{% url 'delete_member' i.id %}"
+                                               class="btn btn-outline-danger btn-sm">
+                                               Delete
+                                            </a>
+                                        </td>
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+</body>
+</html>
