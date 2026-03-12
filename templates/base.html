@@ -63,21 +63,18 @@
                         </li>
 
                         <li class="sidebar-item has-sub">
-                            <a href="#" class="sidebar-link">
-                                <i class="bi bi-list-task"></i>
-                                <span>Tasks</span>
-                            </a>
-                            <ul class="submenu">
+                        <a href="#" class="sidebar-link">
+                            <i class="bi bi-list-task"></i>
+                            <span>Tasks</span>
+                        </a>
 
-                                {% if request.user.role == "admin" %}
-                                <li class="submenu-item">
-                                    <a href="#">Create Task</a>
-                                </li>
-                                {% endif %}
-                                <li class="submenu-item">
-                                    <a href="#">Task List</a>
-                                </li>
-                            </ul>
+                        <ul class="submenu">
+
+                            <li class="submenu-item">
+                                <a href="{% url 'list_task' %}">Task List</a>
+                            </li>
+
+                        </ul>
                         </li>
 
                         {% if request.user.role == "admin" %}

@@ -32,3 +32,22 @@
     margin-bottom:5px;
 }
 
+.project-card{
+    border-radius:12px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.project-card:hover{
+    transform: translateY(-6px);
+    box-shadow:0 12px 30px rgba(0,0,0,0.15);
+}
+
+.card-body{
+    display:flex;
+    flex-direction:column;
+}
+
+.project-members span{
+    margin-right:5px;
+    margin-bottom:5px;
+}

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from tasksapp.models import TaskDb
 from projectsapp.models import ProjectDb
-from accountsapp.models import CustomUser
+
 
 
 def create_task(request, pro_id):
@@ -23,15 +23,54 @@ def save_task(request):
         task_description = request.POST.get("task_description")
         project_id = request.POST.get("project_id")
         assigned_to = request.POST.get("assigned_to")
+        priority = request.POST.get("priority")
         due_date = request.POST.get("due_date")
 
-        project = ProjectDb.objects.get(id=project_id)
-        member = CustomUser.objects.get(id=assigned_to)
-
         task = TaskDb(Task_Title=task_title, Task_Description=task_description,
-            Project=project, Assigned_To=member, Due_Date=due_date
+            Project_id=project_id, Assigned_To_id=assigned_to, Priority=priority, Due_Date=due_date
         )
 
         task.save()
         messages.success(request, "Task created successfully!")
-        return redirect("list_project")
+        return redirect(project_task, pro_id=project_id)
+
+def list_task(request):
+    tasks = TaskDb.objects.all()
+    return render(request, "list_task.html", {'tasks':tasks})
+
+def project_task(request, pro_id):
+    project = ProjectDb.objects.get(id=pro_id)
+    project_tasks = TaskDb.objects.filter(Project_id=pro_id)
+    return render(request, "project_task.html", {
+        'project':project,
+        'project_tasks':project_tasks
+    })
+
+def delete_task(request, task_id):
+    task = TaskDb.objects.get(id=task_id)
+    task.delete()
+    return redirect(list_task)
+
+def edit_task(request, task_id):
+    data = TaskDb.objects.get(id=task_id)
+    project = data.Project
+    members = project.Project_Members.all()
+    return render(request, "edit_task.html", {
+        'data': data,
+        'members': members
+    })
+
+def update_task(request, task_id):
+
+    if request.method == "POST":
+
+        task_title = request.POST.get('task_title')
+        task_description = request.POST.get('task_description')
+        assigned_to = request.POST.get('assigned_to')
+        priority = request.POST.get('priority')
+        status = request.POST.get('status')
+        due_date = request.POST.get('due_date')
+
+        TaskDb.objects.filter(id=task_id).update(Task_Title=task_title,Task_Description=task_description,
+            Assigned_To_id=assigned_to, Priority=priority, Status=status, Due_Date=due_date)
+        return redirect(list_task)

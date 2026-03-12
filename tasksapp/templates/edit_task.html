@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+
+    <div class="card-header">
+        <h4>Edit Task</h4>
+    </div>
+
+    <div class="card-body">
+
+        <form method="POST" action="{% url 'update_task' data.id %}">
+            {% csrf_token %}
+
+            <!-- Task Title -->
+            <div class="mb-3">
+                <label class="form-label">Task Title</label>
+                <input type="text" name="task_title" class="form-control" value="{{ data.Task_Title }}" required>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea name="task_description" class="form-control" rows="3">{{ data.Task_Description }}</textarea>
+            </div>
+
+            <!-- Assign Member -->
+            <div class="mb-3">
+                <label class="form-label">Assign Member</label>
+                <select name="assigned_to" class="form-select">
+
+                    {% for member in members %}
+                    <option value="{{ member.id }}" {% if data.Assigned_To.id == member.id %}selected{% endif %}>
+                        {{ member.username }}
+                    </option>
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <!-- Priority -->
+            <div class="mb-3">
+                <label class="form-label">Priority</label>
+                <select name="priority" class="form-select">
+
+                    {% if data.Priority == "low" %}
+                    <option value="low" selected>Low</option>
+                    {% else %}
+                    <option value="low">Low</option>
+                    {% endif %}
+
+                    {% if data.Priority == "medium" %}
+                    <option value="medium" selected>Medium</option>
+                    {% else %}
+                    <option value="medium">Medium</option>
+                    {% endif %}
+
+                    {% if data.Priority == "high" %}
+                    <option value="high" selected>High</option>
+                    {% else %}
+                    <option value="high">High</option>
+                    {% endif %}
+
+                </select>
+            </div>
+
+
+            <!-- Status -->
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-select">
+
+                    {% if data.Status == "pending" %}
+                    <option value="pending" selected>Pending</option>
+                    {% else %}
+                    <option value="pending">Pending</option>
+                    {% endif %}
+
+                    {% if data.Status == "in_progress" %}
+                    <option value="in_progress" selected>In Progress</option>
+                    {% else %}
+                    <option value="in_progress">In Progress</option>
+                    {% endif %}
+
+                    {% if data.Status == "completed" %}
+                    <option value="completed" selected>Completed</option>
+                    {% else %}
+                    <option value="completed">Completed</option>
+                    {% endif %}
+
+                </select>
+            </div>
+
+            <!-- Due Date -->
+            <div class="mb-3">
+                <label class="form-label">Due Date</label>
+                <input type="date" name="due_date" class="form-control" value="{{ data.Due_Date|date:'Y-m-d' }}">
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-end gap-2">
+
+                <button type="submit" class="btn btn-primary">
+                    Update Task
+                </button>
+
+                <a href="{% url 'project_task' data.Project.id %}" class="btn btn-light-secondary">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

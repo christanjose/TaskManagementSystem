@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row" id="table-hover-row">
+    <div class="col-12">
+        <div class="card">
+
+            <div class="card-header">
+                <h4 class="card-title">Task List</h4>
+            </div>
+
+            <div class="card-content">
+                <div class="table-responsive">
+
+                    <table class="table table-hover mb-0">
+
+                        <thead>
+                            <tr>
+                                <th>Task Title</th>
+                                <th>Project</th>
+                                <th>Assigned To</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Due Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                        {% for task in tasks %}
+
+                        <tr>
+                            <td class="text-bold-500">{{ task.Task_Title }}</td>
+                            <td>{{ task.Project }}</td>
+                            <td>{{ task.Assigned_To }}</td>
+                            <!-- Priority -->
+                            <td>
+                                {% if task.Priority == "high" %}
+                                <span class="badge bg-danger">High</span>
+
+                                {% elif task.Priority == "medium" %}
+                                <span class="badge bg-warning">Medium</span>
+
+                                {% elif task.Priority == "low" %}
+                                <span class="badge bg-success">Low</span>
+
+                                {% endif %}
+                            </td>
+
+                            <!-- Status -->
+                            <td>
+                                {% if task.Status == "pending" %}
+                                <span class="badge bg-warning">Pending</span>
+
+                                {% elif task.Status == "in_progress" %}
+                                <span class="badge bg-info">In Progress</span>
+
+                                {% elif task.Status == "completed" %}
+                                <span class="badge bg-success">Completed</span>
+
+                                {% endif %}
+                            </td>
+
+                            <td>{{ task.Due_Date }}</td>
+
+                            <td>
+                                <a href="{% url 'edit_task' task.id %}" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="{% url 'delete_task' task.id %}" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                No Tasks Available
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
