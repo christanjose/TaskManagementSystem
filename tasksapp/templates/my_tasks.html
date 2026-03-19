@@ -1,0 +1,108 @@
+{% extends 'dashboard.html' %}
+{% block content %}
+
+<div class="page-heading">
+    <h3>My Tasks</h3>
+</div>
+
+<div class="card">
+    <div class="card-body">
+
+        <table class="table table-hover">
+
+            <thead>
+            <tr>
+                <th>Task Title</th>
+                <th>Project</th>
+                <th>Status</th>
+                <th>Update</th>
+                <th>Priority</th>
+                <th>Due Date</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            {% for task in tasks %}
+
+            <tr {% if task.Due_Date < today and task.Status != "completed" %} class="table-danger" {% endif %}>
+
+                <td>{{ task.Task_Title }}</td>
+                <td>{{ task.Project.Project_Name }}</td>
+
+                <td>
+                    {% if task.Status == "pending" %}
+                    <span class="badge bg-warning">Pending</span>
+
+                    {% elif task.Status == "in_progress" %}
+                    <span class="badge bg-primary">In Progress</span>
+
+                    {% elif task.Status == "completed" %}
+                    <span class="badge bg-success">Completed</span>
+                    {% endif %}
+                </td>
+
+                <td>
+
+                <form method="POST">
+                {% csrf_token %}
+
+                   <input type="hidden" name="task_id" value="{{ task.id }}">
+
+                   <select name="status" class="form-select form-select-sm"
+                    onchange="this.form.submit()">
+
+                    {% if task.Status == "pending" %}
+                    <option value="pending" selected>Pending</option>
+                    {% else %}
+                    <option value="pending">Pending</option>
+                    {% endif %}
+
+                    {% if task.Status == "in_progress" %}
+                    <option value="in_progress" selected>In Progress</option>
+                    {% else %}
+                    <option value="in_progress">In Progress</option>
+                    {% endif %}
+
+                    {% if task.Status == "completed" %}
+                    <option value="completed" selected>Completed</option>
+                    {% else %}
+                    <option value="completed">Completed</option>
+                    {% endif %}
+
+                    </select>
+
+                </form>
+
+                </td>
+
+                <td>
+                    {% if task.Priority == "low" %}
+                    <span class="badge bg-success">Low</span>
+
+                    {% elif task.Priority == "medium" %}
+                    <span class="badge bg-warning">Medium</span>
+
+                    {% elif task.Priority == "high" %}
+                    <span class="badge bg-danger">High</span>
+                    {% endif %}
+                </td>
+
+                <td>{{ task.Due_Date }}</td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="6" class="text-center">No tasks assigned</td>
+            </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

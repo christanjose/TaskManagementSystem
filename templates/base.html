@@ -27,7 +27,7 @@
                 <div class="sidebar-header">
                     <div class="d-flex justify-content-between">
                         <div class="logo">
-                            <a href="index.html"><img src="{% static 'assets/images/logo/logo.png' %}" alt="Logo" srcset=""></a>
+                            <a href="{% url 'dashboard' %}"><img src="{% static 'assets/images/logo/logo.png' %}" alt="Logo" srcset=""></a>
                         </div>
                         <div class="toggler">
                             <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -64,15 +64,22 @@
 
                         <li class="sidebar-item has-sub">
                         <a href="#" class="sidebar-link">
-                            <i class="bi bi-list-task"></i>
-                            <span>Tasks</span>
+                        <i class="bi bi-list-task"></i>
+                        <span>Tasks</span>
                         </a>
 
                         <ul class="submenu">
 
-                            <li class="submenu-item">
-                                <a href="{% url 'list_task' %}">Task List</a>
-                            </li>
+                        {% if request.user.role == "admin" %}
+                        <li class="submenu-item">
+                            <a href="{% url 'list_task' %}">Task List</a>
+                        </li>
+                        {% else %}
+
+                        <li class="submenu-item">
+                            <a href="{% url 'my_tasks' %}">My Tasks</a>
+                        </li>
+                        {% endif %}
 
                         </ul>
                         </li>

@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from tasksapp.models import TaskDb
 from projectsapp.models import ProjectDb
+from tasksapp.models import TaskDb
+from django.contrib.auth.decorators import login_required
+from datetime import datetime
 
 
+# _______________ Admin Views _______________
 
 def create_task(request, pro_id):
 
@@ -74,3 +77,23 @@ def update_task(request, task_id):
         TaskDb.objects.filter(id=task_id).update(Task_Title=task_title,Task_Description=task_description,
             Assigned_To_id=assigned_to, Priority=priority, Status=status, Due_Date=due_date)
         return redirect(list_task)
+
+
+# _______________ Admin Views _______________
+
+@login_required
+def my_tasks(request):
+
+    if request.method == "POST":
+        task_id = request.POST.get("task_id")
+        status = request.POST.get("status")
+        TaskDb.objects.filter(id=task_id, Assigned_To=request.user).update(Status=status)
+        return redirect(my_tasks)
+
+    tasks = TaskDb.objects.filter(Assigned_To=request.user)
+    today = datetime.now().date()
+
+    return render(request, "my_tasks.html", {
+        "tasks": tasks,
+        "today": today
+    })

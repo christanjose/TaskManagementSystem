@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from projectsapp.models import ProjectDb
 from accountsapp.models import CustomUser
+from django.contrib.auth.decorators import login_required
+
+from tasksapp.models import TaskDb
 
 
 def create_project(request):
@@ -26,8 +29,34 @@ def save_project(request):
         messages.success(request, "Project created successfully!")
         return redirect(create_project)
 
+
+@login_required
 def list_project(request):
-    projects = ProjectDb.objects.all()
+    if request.user.role == "admin":
+        projects = ProjectDb.objects.all()
+    else:
+        projects = ProjectDb.objects.filter(Project_Members=request.user)
+
+    for project in projects:
+        tasks = TaskDb.objects.filter(Project=project)
+
+        total = 0
+        completed = 0
+
+        for t in tasks:
+            total += 1
+            if t.Status == "completed":
+                completed += 1
+
+        if total > 0:
+            progress = int((completed / total) * 100)
+        else:
+            total = 0
+
+        project.total = total
+        project.completed = completed
+        project.progress = progress
+
     return render(request, "list_project.html", {"projects": projects})
 
 def delete_project(request, pro_id):
