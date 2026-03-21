@@ -88,7 +88,11 @@
                     {% endif %}
                 </td>
 
-                <td>{{ task.Due_Date }}</td>
+                <td>{{ task.Due_Date }}
+                    {% if task.Due_Date < today and task.Status != "completed" %}
+                        <span class="text-danger">(Overdue)</span>
+                    {% endif %}
+                </td>
 
             </tr>
 

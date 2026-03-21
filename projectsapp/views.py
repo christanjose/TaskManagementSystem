@@ -26,8 +26,7 @@ def save_project(request):
         project.save()
         members = request.POST.getlist("project_members")
         project.Project_Members.set(members)
-        messages.success(request, "Project created successfully!")
-        return redirect(create_project)
+        return redirect(list_project)
 
 
 @login_required
@@ -48,10 +47,10 @@ def list_project(request):
             if t.Status == "completed":
                 completed += 1
 
+        progress = 0
         if total > 0:
             progress = int((completed / total) * 100)
-        else:
-            total = 0
+
 
         project.total = total
         project.completed = completed
@@ -88,4 +87,5 @@ def update_project(request, pro_id):
         project = ProjectDb.objects.get(id=pro_id)
         members = request.POST.getlist("project_members")
         project.Project_Members.set(members)
+
         return redirect(list_project)

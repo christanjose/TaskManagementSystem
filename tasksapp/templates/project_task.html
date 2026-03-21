@@ -38,7 +38,7 @@
 
                         {% for task in project_tasks %}
 
-                        <tr>
+                        <tr {% if task.Due_Date < today and task.Status != "completed" %} class="table-danger" {% endif %}>
                             <td class="text-bold-500">{{ task.Task_Title }}</td>
                             <td>{{ task.Assigned_To }}</td>
 
@@ -74,7 +74,11 @@
 
                             </td>
 
-                            <td>{{ task.Due_Date }}</td>
+                            <td>{{ task.Due_Date }}
+                                {% if task.Due_Date < today and task.Status != "completed" %}
+                                    <span class="text-danger">(Overdue)</span>
+                                {% endif %}
+                            </td>
 
                             <td>
 

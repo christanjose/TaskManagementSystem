@@ -39,14 +39,20 @@ def save_task(request):
 
 def list_task(request):
     tasks = TaskDb.objects.all()
-    return render(request, "list_task.html", {'tasks':tasks})
+    today = datetime.now().date()
+    return render(request, "list_task.html", {
+        'tasks':tasks,
+        'today':today
+    })
 
 def project_task(request, pro_id):
     project = ProjectDb.objects.get(id=pro_id)
     project_tasks = TaskDb.objects.filter(Project_id=pro_id)
+    today = datetime.now().date()
     return render(request, "project_task.html", {
         'project':project,
-        'project_tasks':project_tasks
+        'project_tasks':project_tasks,
+        'today':today
     })
 
 def delete_task(request, task_id):

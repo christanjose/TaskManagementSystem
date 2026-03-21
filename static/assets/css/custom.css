@@ -1,53 +1,100 @@
-/* Project Card Styling */
 
-.project-card{
-    height:100%;
-    border-radius:10px;
-    transition: all 0.3s ease;
-    cursor:pointer;
-}
+/* 🔥 PROJECT CARD BASE */
 
-/* Hover Animation */
-
-.project-card:hover{
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.18);
-}
-
-/* Keep buttons at bottom */
-
-.card-body{
-    display:flex;
-    flex-direction:column;
-}
-
-.project-actions{
-    margin-top:auto;
-}
-
-/* Member badges spacing */
-
-.project-members .badge{
-    margin-right:5px;
-    margin-bottom:5px;
-}
-
-.project-card{
-    border-radius:12px;
+.project-card {
+    height: 100%;
+    border-radius: 12px;
+    cursor: pointer;
+    overflow: hidden;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.project-card:hover{
-    transform: translateY(-6px);
-    box-shadow:0 12px 30px rgba(0,0,0,0.15);
+/* 🔥 HOVER EFFECT (LIFT + GLOW) */
+
+.project-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0, 123, 255, 0.2);
 }
 
-.card-body{
-    display:flex;
-    flex-direction:column;
+/* 🔥 CARD BODY FLEX LAYOUT */
+
+.card-body {
+    display: flex;
+    flex-direction: column;
 }
 
-.project-members span{
-    margin-right:5px;
-    margin-bottom:5px;
+/* 🔥 KEEP ACTION BUTTONS AT BOTTOM */
+
+.project-actions {
+    margin-top: auto;
+}
+
+/* 🔥 MEMBER BADGES SPACING */
+
+.project-members .badge {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+/* 🔥 PROGRESS BAR SMOOTH ANIMATION */
+
+.progress-bar {
+    transition: width 0.6s ease;
+}
+
+/* 🔥 TITLE FIX (ALIGN ALL CARDS) */
+
+.card-title {
+    min-height: 48px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;       /* limit to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* 🔥 DESCRIPTION FIX (ALIGN ALL CARDS) */
+
+.project-card p {
+    min-height: 60px;
+    max-height: 60px;
+    overflow: hidden;
+}
+
+/* 🔥 CLICKABLE CARD FIX */
+
+.project-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 🔥 OPTIONAL: SMOOTH IMAGE / ICON SCALE (future use) */
+
+.project-card:hover i {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+/* 🔥 OPTIONAL: SOFT BORDER */
+
+.project-card {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* 🔥 OPTIONAL: CARD SHADOW DEFAULT */
+
+.project-card {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 🔥 OPTIONAL: RESPONSIVE IMPROVEMENT */
+
+@media (max-width: 768px) {
+    .card-title {
+        min-height: auto;
+    }
+
+    .project-card p {
+        min-height: auto;
+        max-height: none;
+    }
 }

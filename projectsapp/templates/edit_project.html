@@ -68,7 +68,7 @@
 
                                         {% for member in members %}
                                             <option value="{{ member.id }}"
-                                            {% if member in data.Project_Members.all %}selected{% endif %}>
+                                             {% if member in data.Project_Members.all %}selected{% endif %}>
                                                 {{ member.username }}
                                             </option>
                                         {% endfor %}
