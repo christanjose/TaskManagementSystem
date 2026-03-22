@@ -23,7 +23,6 @@ class TaskDb(models.Model):
     ]
 
     Priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='medium')
-
     Due_Date = models.DateField()
     Created_At = models.DateTimeField(auto_now_add=True)
 
@@ -33,3 +32,13 @@ class TaskDb(models.Model):
 
     def __str__(self):
         return self.Task_Title
+
+
+class TaskCommentDb(models.Model):
+    Task = models.ForeignKey(TaskDb, on_delete=models.CASCADE, related_name="comments")
+    User = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    Comment = models.TextField()
+    Created_AT = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.Comment

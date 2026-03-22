@@ -18,6 +18,7 @@
                 <th>Update</th>
                 <th>Priority</th>
                 <th>Due Date</th>
+                <th>Actions</th>
             </tr>
             </thead>
 
@@ -92,6 +93,12 @@
                     {% if task.Due_Date < today and task.Status != "completed" %}
                         <span class="text-danger">(Overdue)</span>
                     {% endif %}
+                </td>
+
+                <td>
+                    <a href="{% url 'task_detail' task.id %}" class="btn btn-sm btn-info">
+                        View
+                    </a>
                 </td>
 
             </tr>

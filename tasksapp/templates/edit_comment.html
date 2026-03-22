@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+
+    <!-- 🔹 Header -->
+    <div class="card-header">
+        <h4>Edit Comment</h4>
+    </div>
+
+    <!-- 🔹 Body -->
+    <div class="card-body">
+
+        <form method="POST" action="{% url 'update_comment' data.id %}">
+            {% csrf_token %}
+
+            <!-- Comment Text -->
+            <div class="mb-3">
+                <label class="form-label">Edit Your Comment</label>
+                <textarea name="taskcomment" class="form-control" rows="5" required>
+                    {{ data.Comment }}
+                </textarea>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-end gap-2">
+
+                <button type="submit" class="btn btn-primary">
+                    Update
+                </button>
+
+                <a href="{% url 'task_detail' data.Task_id %}" class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
