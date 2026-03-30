@@ -42,3 +42,13 @@ class TaskCommentDb(models.Model):
 
     def __str__(self):
         return self.Comment
+
+
+class TaskAttachmentDb(models.Model):
+    Task = models.ForeignKey(TaskDb, on_delete=models.CASCADE, related_name="attachments")
+    File = models.FileField(upload_to='task_files')
+    Uploaded_By = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    Created_At = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.File.name

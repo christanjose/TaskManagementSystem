@@ -15,8 +15,21 @@
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <h6 class="text-white">Projects</h6>
-                            <h6 class="font-extrabold mb-0">{{ project_count }}</h6>
+                            <h6 class="text-white">
+                                {% if request.user.role == "admin" %}
+                                    Projects
+                                {% else %}
+                                    My Tasks
+                                {% endif %}
+                            </h6>
+                            <h6 class="font-extrabold mb-0">
+                                {% if request.user.role == "admin" %}
+                                    {{ project_count }}
+                                {% else %}
+                                    {{ my_task_count }}
+                                {% endif %}
+                            </h6>
+
                         </div>
                     </div>
                 </div>
@@ -34,8 +47,20 @@
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <h6 class="text-white">Members</h6>
-                            <h6 class="font-extrabold mb-0">{{ user_count }}</h6>
+                            <h6 class="text-white">
+                                {% if request.user.role == "admin" %}
+                                    Members
+                                {% else %}
+                                    Pending
+                                {% endif %}
+                            </h6>
+                            <h6 class="font-extrabold mb-0">
+                                {% if request.user.role == "admin" %}
+                                    {{ user_count }}
+                                {% else %}
+                                    {{ pending_count }}
+                                {% endif %}
+                            </h6>
                         </div>
                     </div>
                 </div>
@@ -48,13 +73,25 @@
                 <div class="card-body px-3 py-4-5">
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="stats-icon yellow">
+                            <div class="stats-icon yellow ">
                                 <i class="bi bi-list-task"></i>
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <h6 class="text-white">Tasks</h6>
-                            <h6 class="font-extrabold mb-0">{{ task_count }}</h6>
+                            <h6 class="text-white">
+                                {% if request.user.role == "admin" %}
+                                    Tasks
+                                {% else %}
+                                    In Progress
+                                {% endif %}
+                            </h6>
+                            <h6 class="font-extrabold mb-0">
+                                {% if request.user.role == "admin" %}
+                                    {{ task_count }}
+                                {% else %}
+                                    {{ in_progress_count }}
+                                {% endif %}
+                            </h6>
                         </div>
                     </div>
                 </div>

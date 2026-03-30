@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from projectsapp.models import ProjectDb
-from tasksapp.models import TaskDb, TaskCommentDb
+from tasksapp.models import TaskDb, TaskCommentDb, TaskAttachmentDb
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
@@ -37,6 +37,16 @@ def save_task(request):
 def list_task(request):
     tasks = TaskDb.objects.all()
     today = datetime.now().date()
+
+    status = request.GET.get('status')
+    priority = request.GET.get('priority')
+
+    if status:
+        tasks = tasks.filter(Status=status)
+
+    if priority:
+        tasks = tasks.filter(Priority=priority)
+
     return render(request, "list_task.html", {
         'tasks':tasks,
         'today':today
@@ -108,9 +118,20 @@ def task_detail(request, task_id):
         return redirect(my_tasks)
 
     task_comments = task.comments.all().order_by('Created_AT')
+
+    attachments = TaskAttachmentDb.objects.filter(Task_id=task_id)
+
+    if request.method == "POST":
+
+        file = request.FILES.get("file")
+        attachment = TaskAttachmentDb(Task_id=task_id, File=file, Uploaded_By=request.user)
+        attachment.save()
+        return redirect(task_detail, task_id=task_id)
+
     return render(request, "task_detail.html", {
         "task": task,
-        "task_comments": task_comments
+        "task_comments": task_comments,
+        "attachments":attachments
     })
 
 @login_required
@@ -163,4 +184,16 @@ def delete_comment(request, comment_id):
 
     task_id = comment.Task_id
     comment.delete()
+    return redirect(task_detail, task_id=task_id)
+
+@login_required
+def delete_attachment(request, attachment_id):
+
+    attachment = TaskAttachmentDb.objects.get(id=attachment_id)
+    task_id = attachment.Task_id
+
+    if request.user != attachment.Uploaded_By and request.user.role != "admin":
+        return redirect(task_detail, task_id=task_id)
+
+    attachment.delete()
     return redirect(task_detail, task_id=task_id)

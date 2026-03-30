@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from accountsapp.models import CustomUser
+from projectsapp.models import ProjectDb
+from tasksapp.models import TaskDb
 from django.contrib import messages
 
 def login_page(request):
@@ -53,4 +55,31 @@ def delete_member(request, memb_id):
 
 @login_required
 def dashboard(request):
-    return render(request, "dashboard.html")
+
+    if request.user.role == "admin":
+
+        project_count = ProjectDb.objects.count()
+        user_count = CustomUser.objects.filter(role="member").count()
+        task_count = TaskDb.objects.count()
+        completed_tasks = TaskDb.objects.filter(Status="completed").count()
+
+        return render(request, "dashboard.html", {
+            'project_count': project_count,
+            'user_count': user_count,
+            'task_count': task_count,
+            'completed_tasks': completed_tasks,
+        })
+
+    else:
+
+        my_task_count = TaskDb.objects.filter(Assigned_To=request.user).count()
+        pending_count = TaskDb.objects.filter(Assigned_To=request.user, Status="pending").count()
+        in_progress_count = TaskDb.objects.filter(Assigned_To=request.user, Status="in_progress").count()
+        completed_tasks = TaskDb.objects.filter(Assigned_To=request.user, Status="completed").count()
+
+        return render(request, "dashboard.html", {
+            'my_task_count': my_task_count,
+            'pending_count': pending_count,
+            'in_progress_count': in_progress_count,
+            'completed_tasks': completed_tasks,
+        })
